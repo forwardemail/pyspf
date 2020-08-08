@@ -1135,7 +1135,10 @@ class query(object):
                 if expansion:
                     if expansion == self:
                         raise PermError('Unknown Macro Encountered', macro) 
-                    e = expand_one(expansion, macro[3:-1], JOINERS.get(letter))
+                    try:
+                        e = expand_one(expansion, macro[3:-1], JOINERS.get(letter))
+                    except Exception as x:
+                        raise TempError('Macro Expansion error: ' + str(x))
                     if letter != macro[2]:
                         e = urllibparse.quote(e,'~')
                     result += e
